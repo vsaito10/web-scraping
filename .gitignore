@@ -1,0 +1,11 @@
+# created by virtualenv automatically
+geckodriver.log
+/share/
+/Scripts/
+/Lib/
+/drivers/
+pyvenv.cfg
+*.xlsx
+*.xls
+*.csv
+*.pdf
