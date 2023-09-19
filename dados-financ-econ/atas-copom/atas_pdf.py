@@ -6,7 +6,7 @@ from time import sleep
 class AtasCopom:
     def __init__(self):
         # Diretório do download do arquivo
-        self.download_directory = 'C://Users//vitor//projetos_python//python_b3//web-scraping//dados-financ-econ//atas-copom//arquivo-pdf'
+        self.download_directory = 'C://Users//vitor//projetos_python//python_b3//historico-arquivos//atas-pdf'
 
         # Lista que armazena as URLs das atas do COPOM
         self.lista_urls = [
