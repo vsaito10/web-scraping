@@ -2,6 +2,12 @@ import os
 import requests
 from time import sleep
 
+"""
+Exceções encontradas no padrão da URL
+Fiz o webscraping das atas 232 até a 256 - as atas '234' e '235' possuem um padrão diferente da URL do download do PDF
+Ata 234 -> https://www.bcb.gov.br/content/copom/copomminutes/234th%20Copom%20Minutes.pdf
+Ata 235 -> https://www.bcb.gov.br/content/copom/copomminutes/235th%20Meeting%20-%20December%208-9,%202020.pdf
+"""
 
 class AtasCopom:
     def __init__(self):
@@ -10,7 +16,7 @@ class AtasCopom:
 
         # Lista que armazena as URLs das atas do COPOM
         self.lista_urls = [
-            f'https://www.bcb.gov.br/content/copom/copomminutes/MINUTES%20{num_ata}.pdf' for num_ata in range(250, 257)]
+            f'https://www.bcb.gov.br/content/copom/copomminutes/MINUTES%20{num_ata}.pdf' for num_ata in range(232, 257)]
 
         self.headers = {
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36',
