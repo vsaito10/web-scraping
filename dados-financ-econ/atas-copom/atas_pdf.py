@@ -3,20 +3,17 @@ import requests
 from time import sleep
 
 """
-Exceções encontradas no padrão da URL
-Fiz o webscraping das atas 232 até a 256 - as atas '234' e '235' possuem um padrão diferente da URL do download do PDF
-Ata 234 -> https://www.bcb.gov.br/content/copom/copomminutes/234th%20Copom%20Minutes.pdf
-Ata 235 -> https://www.bcb.gov.br/content/copom/copomminutes/235th%20Meeting%20-%20December%208-9,%202020.pdf
+Exceções encontradas no padrão da URL:
+- Fiz o webscraping das atas 232 até a 256 - as atas '234' e '235' possuem um padrão diferente da URL do download do PDF
+- Ata 234 -> https://www.bcb.gov.br/content/copom/copomminutes/234th%20Copom%20Minutes.pdf
+- Ata 235 -> https://www.bcb.gov.br/content/copom/copomminutes/235th%20Meeting%20-%20December%208-9,%202020.pdf
+- As atas anteriores a 236 possuem um padrão diferente de URL (algumas atas possuem o padrão estabelecido, mas a maioria é diferente)
 """
 
 class AtasCopom:
     def __init__(self):
         # Diretório do download do arquivo
-        self.download_directory = 'C://Users//vitor//projetos_python//python_b3//historico-arquivos//atas-pdf'
-
-        # Lista que armazena as URLs das atas do COPOM
-        self.lista_urls = [
-            f'https://www.bcb.gov.br/content/copom/copomminutes/MINUTES%20{num_ata}.pdf' for num_ata in range(232, 257)]
+        self.download_directory = 'C://Users//vitor//projetos_python//python_b3//historico-arquivos//minutes-pdf'
 
         self.headers = {
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36',
@@ -26,7 +23,13 @@ class AtasCopom:
             'Connection': 'close'
         }
 
-    def baixar_arquivos(self):
+    def baixar_arquivos(self, num_ata_inicial, num_ata_final):
+
+        # Lista que armazena as URLs das atas do COPOM
+        self.lista_urls = [
+            f'https://www.bcb.gov.br/content/copom/copomminutes/MINUTES%20{num_ata}.pdf' for num_ata in range(num_ata_inicial, num_ata_final)
+        ]
+
         for url in self.lista_urls:
 
             response = requests.get(url, headers=self.headers)
@@ -41,15 +44,14 @@ class AtasCopom:
                 with open(nome_arquivo, 'wb') as f:
                     f.write(response.content)
             else:
-                print(
-                    f'Falha ao baixar {url}, status code: {response.status_code}')
+                print(f'Falha ao baixar {url}, status code: {response.status_code}')
 
             sleep(3.5)
 
 
 def main():
     proxy_rate = AtasCopom()
-    proxy_rate.baixar_arquivos()
+    proxy_rate.baixar_arquivos(num_ata_inicial=232, num_ata_final=257)
 
 
 if __name__ == "__main__":
