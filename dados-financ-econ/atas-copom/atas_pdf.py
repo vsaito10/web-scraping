@@ -50,8 +50,8 @@ class AtasCopom:
 
 
 def main():
-    proxy_rate = AtasCopom()
-    proxy_rate.baixar_arquivos(num_ata_inicial=232, num_ata_final=257)
+    atas = AtasCopom()
+    atas.baixar_arquivos(num_ata_inicial=232, num_ata_final=257)
 
 
 if __name__ == "__main__":
