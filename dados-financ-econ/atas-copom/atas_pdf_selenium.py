@@ -5,26 +5,43 @@ from time import sleep
 import os
 import re
 import requests
-import glob
 
 
 class AtasCopom:
     def __init__(self):
-        options = Options()
+
+        # Diretório do download do arquivo 
         self.path_download = r"C:\Users\vitor\projetos_python\python_b3\historico-arquivos\minutes-pdf"
+
+        options = Options()
         #options.add_argument("--headless")
-        options.add_argument("--incognito")
-        options.set_preference("browser.download.folderList", 2)  # Personalizado
+        options.set_preference("browser.download.folderList", 2)  
         options.set_preference("browser.download.dir", self.path_download)
-        options.set_preference("browser.download.useDownloadDir", True)  # Usar o diretório de download especificado
-        options.set_preference("browser.download.viewableInternally.enabledTypes", "")  # Evitar que o Firefox visualize o arquivo
-        options.set_preference("pdfjs.disabled", True)  # Desativar visualização interna de PDF
-        options.set_preference("plugin.disable_full_page_plugin_for_types", "application/pdf")  # Desativar visualização interna de PDF
+        options.set_preference("browser.download.useDownloadDir", True) 
+        options.set_preference("browser.download.viewableInternally.enabledTypes", "")  
+        options.set_preference("pdfjs.disabled", True)  
+        options.set_preference("plugin.disable_full_page_plugin_for_types", "application/pdf")  
 
         self.driver = webdriver.Firefox(options=options)
 
-    def download_arquivo(self, num_ata_inicial, num_ata_final):
-        # Url p/ extrair as datas de publicações p/ criar as urls de cada ata p/ download dos pdfs
+    def download_arquivo(self, pos_ata_inicial: int, pos_ata_final: int):
+        """
+        Download do arquivo PDF da ata do COPOM.
+        Primeiro, extraio as datas de publições das atas para montar as URLs de cada ata específica.
+        Para fazer o download de múltiplos PDFs, eu tenho que iterar sobre um range entre as posições das atas.
+                
+        Parameters:
+        'pos_ata_inicial' (int): posição da ata na lista das publicações das datas ('lst_data_pub').
+        'pos_ata_final' (int): posição da ata na lista das publicações das datas ('lst_data_pub').
+
+        NOTE: 
+        - Olhar o Jupyter notebook 'atas_pdf_selenium_apoio' para saber qual é a posição específica de uma ata;
+        - EXCEÇÕES AO PADRÃO DA URL -> 'https://www.bcb.gov.br/en/publications/copomminutes/{data_pub}': 
+            - A ata 223 possui um padrão diferente de URL -> 'https://www.bcb.gov.br/en/publications/copomminutes/minutes223'. 
+
+        """
+
+        # Url p/ extrair as datas de publicações que serão usadas para criar as urls de cada ata
         url = "https://www.bcb.gov.br/api/servico/sitebcb/copomminutes/ultimas"
 
         querystring = {"quantidade":"1000","filtro":""}
@@ -34,14 +51,14 @@ class AtasCopom:
         r = requests.request("GET", url, data=payload, headers=headers, params=querystring)
         data = r.json()
 
-        # Número da ata inicial
-        n_ata_inicial = num_ata_inicial
-        # Número da ata final
-        n_ata_final = num_ata_final
+        # Posição da ata inicial
+        posicao_ata_inicial = pos_ata_inicial
+        # Posição da ata final
+        posicao_ata_final = pos_ata_final
 
         # Lista com as datas de publicações de todas as atas
         lst_data_pub = []
-        for i in range(n_ata_final - n_ata_inicial + 1):
+        for i in range(pos_ata_inicial, pos_ata_final+1):
             data_pub = data['conteudo'][i]['DataReferencia']
             lst_data_pub.append(data_pub)
 
@@ -62,6 +79,7 @@ class AtasCopom:
         # Iterando sobre as urls para fazer o download dos pdfs
         for url in lst_url:
             self.driver.get(url)
+            self.driver.implicitly_wait(2)
             sleep(1)
 
             while True:
@@ -69,7 +87,7 @@ class AtasCopom:
                     # Clicando no botão de cookie
                     botao_cookie = self.driver.find_element(By.XPATH, '/html/body/app-root/bcb-cookies/div/div/div/div/button[2]')
                     botao_cookie.click()
-                    sleep(2)
+                    sleep(1)
                 except:
                     pass
 
@@ -78,22 +96,11 @@ class AtasCopom:
                     botao_download = self.driver.find_element(By.XPATH, '//*[@id="publicacao"]/div[1]/div/div/div/div[1]/div[2]/download/div/div/a')
                     # Usando JavaScript para acionar o download diretamente
                     self.driver.execute_script("arguments[0].click();", botao_download)                            
-                    sleep(5)    
+                    sleep(10)    
+
                     break  
                 except:
                     pass
-
-    def renomear_arquivos(self):
-        # Listando todos os arquivos na pasta de download
-        arquivos = glob.glob(os.path.join(self.path_download, '*.pdf'))
-
-        # Colocando os nomes dos arquivos em letras minúsculas e trocando o espaço em branco por underline
-        for arquivo in arquivos:
-            novo_nome_arquivo = os.path.basename(arquivo).replace(' ', '_').lower()
-            caminho_novo = os.path.join(self.path_download, novo_nome_arquivo)
-            os.rename(arquivo, caminho_novo)
-
-        print("Arquivos renomeados com sucesso.")
 
     def fechar_site(self):
         # Fechando o driver
@@ -102,10 +109,10 @@ class AtasCopom:
 
 def main():
     atas = AtasCopom()
-    atas.download_arquivo(num_ata_inicial=220, num_ata_final=231)
-    atas.renomear_arquivos()
+    atas.download_arquivo(pos_ata_inicial=46, pos_ata_final=57)
     atas.fechar_site()
 
 
 if __name__ == "__main__":
     main()
+
