@@ -16,8 +16,9 @@ PMI ISM Industrial - https://br.investing.com/economic-calendar/ism-manufacturin
 Neste código:
 - Preciso mudar a URL do PMI
 - Olhar como está o layout da tabela, se o último PMI lançado está na penúltima ou antepenúltima linha
-- se o último PMI lançado está na penúltima linha - df = df.iloc[:-1]
-- se o último PMI lançado está na antepenúltima linha - df = df.iloc[:-2]
+- se o último PMI lançado está na última linha - df = df.iloc[:-1]
+- se o último PMI lançado está na penúltima linha - df = df.iloc[:-2]
+- se o último PMI lançado está na antepenúltima linha - df = df.iloc[:-3]
 """
 
 class WebScrapingAtualizacaoPMI:
@@ -26,11 +27,10 @@ class WebScrapingAtualizacaoPMI:
         options.add_argument("--incognito")
         self.driver = webdriver.Firefox(options=options)
 
-        self.url = 'https://br.investing.com/economic-calendar/services-pmi-1062'
-        self.tipo_pmi = re.search(r"-(\d+)$", self.url).group(1)
-
-    def acessar_site(self):
-        self.driver.get(self.url)
+    def acessar_site(self, url_pmi: str):
+        url = url_pmi
+        self.tipo_pmi = re.search(r"-(\d+)$", url).group(1)
+        self.driver.get(url)
         sleep(2)
 
     def web_scraping_tabela(self, filename: str):
@@ -140,7 +140,7 @@ class WebScrapingAtualizacaoPMI:
 
 def main():
     pmi = WebScrapingAtualizacaoPMI()
-    pmi.acessar_site()
+    pmi.acessar_site(url_pmi='https://br.investing.com/economic-calendar/services-pmi-1062')
     pmi.web_scraping_tabela(filename='pmi_servicos')
     pmi.fechar_site()
 

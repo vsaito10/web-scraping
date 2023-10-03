@@ -30,11 +30,10 @@ class WebScrapingPMI:
         options.add_argument("--incognito")
         self.driver = webdriver.Firefox(options=options)
 
-        self.url = 'https://br.investing.com/economic-calendar/services-pmi-1062'
-        self.tipo_pmi = re.search(r"-(\d+)$", self.url).group(1)
-
-    def acessar_site(self):
-        self.driver.get(self.url)
+    def acessar_site(self, url_pmi: str):
+        url = url_pmi
+        self.tipo_pmi = re.search(r"-(\d+)$", url).group(1)
+        self.driver.get(url)
         sleep(2)
 
     def botao_propaganda(self):
@@ -151,7 +150,7 @@ class WebScrapingPMI:
 
 def main():
     pmi = WebScrapingPMI()
-    pmi.acessar_site()
+    pmi.acessar_site(url_pmi='https://br.investing.com/economic-calendar/services-pmi-1062')
     pmi.botao_propaganda()
     pmi.botao_hist()
     pmi.web_scraping_tabela()
