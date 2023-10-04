@@ -113,6 +113,8 @@ class WebScrapingAtualizacaoPMI:
         df_ultimo_dado = df_ultimo_dado.set_index('lancamento')
         # Selecionando apenas a data retirando o horário (00:00:00)
         df_ultimo_dado.index = df_ultimo_dado.index.date
+        # Renomeando o nome do index para 'Unnamed: 0'
+        df_ultimo_dado.index.name = 'Unnamed: 0'
 
         # Substituindo as 'vírgulas' dos números por 'ponto'
         df_ultimo_dado['atual'] = df_ultimo_dado['atual'].str.replace(',', '.')
@@ -122,8 +124,8 @@ class WebScrapingAtualizacaoPMI:
         # Abrindo o arquivo completo para atualizá-lo
         df_completo = pd.read_csv(
             f'C://Users//vitor//projetos_python//python_b3//web-scraping//dados-financ-econ//pmi//atualizado//{filename}.csv', 
-            sep=';', 
-            index_col='lancamento'
+            sep=';',
+            index_col='Unnamed: 0'
         )
         # Concatenando os dois dfs
         df_completo = pd.concat([df_completo, df_ultimo_dado], axis=0)
