@@ -7,10 +7,6 @@ import pandas as pd
 import re
 from time import sleep
 
-"""
-No dia 27/10/23, a B3 mudou o layout da tabela das posições em aberto do dólar futuro. Ela retirou a linha do player 'Outras Jurídicas Financeiras'.
-"""
-
 
 class ContratosAbertoB3:
 
