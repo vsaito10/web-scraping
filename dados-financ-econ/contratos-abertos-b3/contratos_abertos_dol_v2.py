@@ -53,7 +53,7 @@ class ContratosAbertoB3:
             ]
 
             # Nome das linhas da tabela
-            # 'Bancos', 'DTVM'S e Corretoras de Valores' e 'Outras Jurídicas Financeiras'
+            # 'Bancos' e 'DTVM'S e Corretoras de Valores'
             lst_players = [
                 tabela.find_element(By.XPATH, f'//*[@id="divContainerIframeBmf"]/div[2]/div/table[{posicao_dol_xpath}]/tbody/tr[{i}]/td[1]').text
                 for i in [2, 3]
