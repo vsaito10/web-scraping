@@ -68,8 +68,6 @@ class ContratosAbertoB3:
             # Juntando as listas dos players
             lst_player_final = lst_players + lst_players_2
 
-            print(lst_player_final)
-
             # Números da tabela
             lst_num_compra = [
                 tabela.find_element(By.XPATH, f'//*[@id="divContainerIframeBmf"]/div[2]/div/table[{posicao_dol_xpath}]/tbody/tr[{i}]/td[2]').text
