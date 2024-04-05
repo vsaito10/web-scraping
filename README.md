@@ -10,7 +10,8 @@ Pasta 'dados-financ-econ':
 - 'pmi': faz o scraping da tabela do PMI do site da Investing;
 - 'projecoes-ifi': faz o scraping da tabela de projeções do IFI;
 - 'proxy-rate': faz o download da planilha do proxy rate do site FED San Francisco;
-- 'titulos-publicos': faz o download da planilha dos títulos públicos (LTN, NTN-B e NTN-B principal) do Brasil.
+- 'titulos-publicos': faz o download da planilha dos títulos públicos (LTN, NTN-B e NTN-B principal) do Brasil;
+- 'sp500-ratios': faz o scraping das tabelas dos indicadores S&P500 PE e S&P500 EY. 
 
 Pasta 'dados-alternativos':
 - 'nivel-reservatorios': faz o scraping das porcentagens dos níveis dos reservatórios do Brasil.
