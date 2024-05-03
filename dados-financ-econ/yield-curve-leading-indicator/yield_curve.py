@@ -6,8 +6,6 @@ import pandas as pd
 # The Yield Curve as a Leading Indicator - FED NY
 # A URL do 'yield.csv' foi encontrada na aba 'Charts' (https://www.newyorkfed.org/research/capital_markets/ycfaq#/interactive) 
 # 'Network' -> 'Fetch/XHR' -> 'yield.csv' -> 'Copy as cURL (cdm)' -> Insomnia
-import requests
-
 url = 'https://www.newyorkfed.org/medialibrary/media/research/capital_markets/yield/assets/data/yield.csv'
 
 payload = ""
