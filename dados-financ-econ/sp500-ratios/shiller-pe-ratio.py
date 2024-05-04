@@ -26,7 +26,6 @@ class ShillerPE:
         self.soup = BeautifulSoup(response.content, 'html.parser')
 
     def download_planilha(self):
-
         # Tabela 
         planilha = self.soup.find_all('div', class_='x-el x-el-div c1-1 c1-2 c1-1k c1-1t c1-1u c1-54 c1-1e c1-1w c1-1x c1-55 c1-1z c1-b c1-c c1-22 c1-23 c1-56 c1-25 c1-d c1-57 c1-58 c1-e c1-f c1-g')
         
@@ -63,7 +62,7 @@ class ShillerPE:
                 f.write(response.content)
 
             # Renomeando o arquivo para 'shiiler-pe.xls'
-            novo_nome_arquivo = os.path.join(self.download_directory, 'shiiler-pe.xls')
+            novo_nome_arquivo = os.path.join(self.download_directory, 'shiler-pe.xls')
             os.rename(novo_caminho, novo_nome_arquivo)
 
 

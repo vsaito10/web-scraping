@@ -3,6 +3,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 import pandas as pd
 
+
 class WebScrapingSP500PE:
     def __init__(self):
         self.driver = webdriver.Firefox() 
@@ -32,7 +33,7 @@ class WebScrapingSP500PE:
         # Renomeando as colunas do df
         df = df.rename(columns={0: 'Date', 1: 'PE'})
         # Transformando em datetime
-        df['Date'] = pd.to_datetime(df['Date'])
+        df['Date'] = pd.to_datetime(df['Date'], format='%b %d, %Y')
         # Formatando a data
         df['Date'] = df['Date'].dt.strftime('%m-%d-%Y')
         # Transformando a coluna 'Date' no index
@@ -49,11 +50,13 @@ class WebScrapingSP500PE:
     def fechar_site(self):
         self.driver.quit()
 
+
 def main():
     sp500_pe = WebScrapingSP500PE()
     sp500_pe.acessar_site()
     sp500_pe.web_scraping_table()
     sp500_pe.fechar_site()
+
 
 if __name__ == "__main__":
     main()

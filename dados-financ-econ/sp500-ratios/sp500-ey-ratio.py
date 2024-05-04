@@ -32,8 +32,10 @@ class WebScrapingSP500EY:
         df = df[[0, 1]]
         # Renomeando as colunas do df
         df = df.rename(columns={0: 'Date', 1: 'EY'})
+
         # Transformando em datetime
-        df['Date'] = pd.to_datetime(df['Date'])
+        df['Date'] = pd.to_datetime(df['Date'], format='%b %d, %Y')
+
         # Formatando a data
         df['Date'] = df['Date'].dt.strftime('%m-%d-%Y')
         # Transformando a coluna 'Date' no index
@@ -49,6 +51,7 @@ class WebScrapingSP500EY:
 
     def fechar_site(self):
         self.driver.quit()
+
 
 def main():
     sp500_ey = WebScrapingSP500EY()
