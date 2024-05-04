@@ -62,7 +62,7 @@ class ShillerPE:
                 f.write(response.content)
 
             # Renomeando o arquivo para 'shiiler-pe.xls'
-            novo_nome_arquivo = os.path.join(self.download_directory, 'shiler-pe.xls')
+            novo_nome_arquivo = os.path.join(self.download_directory, 'shiller_pe.xls')
             os.rename(novo_caminho, novo_nome_arquivo)
 
 
