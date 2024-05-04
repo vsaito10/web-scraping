@@ -6,12 +6,14 @@ Pasta 'dados-financ-econ':
 - 'contratos-abertos-b3': faz o scraping da tabela das posições dos players em relação ao mercado futuro de dólar;
 - 'endividamento-brasil': faz o scraping da tabela da pesquisa PEIC sobre o endividamento do brasileiro feito pelo FECOMERCIOSP;
 - 'intervalos-ipca': faz o scraping da coluna 'Tamanho do intervalo +/- (p.p.)' da tabela do 'Histórico das metas para a inflação';
+- 'ipo': faz o download da planilha dos IPOs realizados na B3;
 - 'novo-caged': faz o download da planilha do novo CAGED;
 - 'pmi': faz o scraping da tabela do PMI do site da Investing;
 - 'projecoes-ifi': faz o scraping da tabela de projeções do IFI;
 - 'proxy-rate': faz o download da planilha do proxy rate do site FED San Francisco;
 - 'titulos-publicos': faz o download da planilha dos títulos públicos (LTN, NTN-B e NTN-B principal) do Brasil;
-- 'sp500-ratios': faz o scraping das tabelas dos indicadores S&P500 PE e S&P500 EY. 
+- 'sp500-ratios': faz o scraping das tabelas dos indicadores S&P500 PE e S&P500 EY;
+- 'yield-curve-leading-indicator': faz o download da planilha do FED NY do indicador yield curve leading indicator.
 
 Pasta 'dados-alternativos':
 - 'nivel-reservatorios': faz o scraping das porcentagens dos níveis dos reservatórios do Brasil.

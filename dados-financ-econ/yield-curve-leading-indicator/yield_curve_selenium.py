@@ -5,7 +5,6 @@ from time import sleep
 
 
 class YieldCurveFedNy:
-
     def __init__(self):
         # Diretório do download do arquivo 
         self.path_download = r"C:\Users\vitor\projetos_python\python_b3\web-scraping\dados-financ-econ\yield-curve-leading-indicator"
@@ -40,10 +39,10 @@ class YieldCurveFedNy:
 
 
 def main():
-    contratos_aberto = YieldCurveFedNy()
-    contratos_aberto.acessar_site()     
-    contratos_aberto.download_planhilha()     
-    contratos_aberto.fechar_site()
+    yield_curve = YieldCurveFedNy()
+    yield_curve.acessar_site()     
+    yield_curve.download_planhilha()     
+    yield_curve.fechar_site()
 
 
 if __name__ == "__main__":
