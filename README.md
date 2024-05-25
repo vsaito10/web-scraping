@@ -3,6 +3,7 @@ Web scraping de dados ligado ao mercado financeiro e de dados alternativos.
 
 Pasta 'dados-financ-econ':
 - 'atas-copom': faz o download das atas do COPOM (arquivos em pdf);
+- 'classificacao-risco-br': faz o download da planilha da classificação do risco do Brasil;
 - 'contratos-abertos-b3': faz o scraping da tabela das posições dos players em relação ao mercado futuro de dólar;
 - 'endividamento-brasil': faz o scraping da tabela da pesquisa PEIC sobre o endividamento do brasileiro feito pelo FECOMERCIOSP;
 - 'intervalos-ipca': faz o scraping da coluna 'Tamanho do intervalo +/- (p.p.)' da tabela do 'Histórico das metas para a inflação';
