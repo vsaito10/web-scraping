@@ -15,6 +15,8 @@ PMI Serviços - https://br.investing.com/economic-calendar/services-pmi-1062
 PMI Industrial - https://br.investing.com/economic-calendar/manufacturing-pmi-829
 PMI ISM Não-Manufatura - https://br.investing.com/economic-calendar/ism-non-manufacturing-pmi-176
 PMI ISM Industrial - https://br.investing.com/economic-calendar/ism-manufacturing-pmi-173
+PMI Industrial China - https://br.investing.com/economic-calendar/chinese-manufacturing-pmi-594
+PMI Servicos - https://br.investing.com/economic-calendar/chinese-non-manufacturing-pmi-831
 
 Neste código:
 - Preciso mudar a URL do PMI
@@ -24,6 +26,7 @@ Neste código:
 - se o último PMI lançado está na terceira linha da tabela - ela possui duas linhas em branco -> df = df.iloc[:-2]
 
 """
+
 class WebScrapingPMI:
     def __init__(self):
         options = Options()
@@ -70,10 +73,12 @@ class WebScrapingPMI:
         match = re.findall(r"\b(serviços|industrial|pmi|ism|não-manufatura)\b", text_title)
         # Substituindo a palavra 'serviços' por 'servicos'
         if 'serviços' in match:
-            match[1] = match[1].replace('ç', 'c')
+            posicao_str = match.index('serviços')
+            match[posicao_str] = match[posicao_str].replace('ç', 'c')
         # Substituindo a palavra 'não-manufatura' por 'nao_manufatura'
         elif 'não-manufatura' in match:
-            match[2] = match[2].replace('ã', 'a').replace('-', '_')
+            posicao_str = match.index('não-manufatura')
+            match[posicao_str] = match[posicao_str].replace('ã', 'a').replace('-', '_')
         # Juntando as palavras ('services_pmi' ou 'manufacturing_pmi' ou 'pmi_industrial_ism' ou 'pmi_ism_nao_manufatura')
         text_title = "_".join(match).lower()
 
@@ -130,7 +135,7 @@ class WebScrapingPMI:
             df = df.iloc[:]
             # Definindo coluna 'lancamento' como o index do df
             df = df.set_index('lancamento')
-        elif (self.tipo_pmi == '1062') or (self.tipo_pmi == '829'):
+        elif (self.tipo_pmi == '1062') or (self.tipo_pmi == '829') or (self.tipo_pmi == '594') or (self.tipo_pmi == '831'):
             df = df.iloc[:-1]
             # Definindo coluna 'lancamento' como o index do df
             df = df.set_index('lancamento')
@@ -141,7 +146,8 @@ class WebScrapingPMI:
         df['anterior'] = df['anterior'].str.replace(',', '.')
 
         # Transformando em um arquivo csv
-        df.to_csv(f'C://Users//vitor//projetos_python//python_b3//web-scraping//dados-financ-econ//pmi//atualizado//{text_title}.csv', sep=';')
+        #df.to_csv(f'C://Users//vitor//projetos_python//python_b3//web-scraping//dados-financ-econ//pmi//atualizado//{text_title}.csv', sep=';')
+        df.to_csv(f'C://Users//vitor//projetos_python//python_b3//web-scraping//dados-financ-econ//pmi//atualizado//china_{text_title}.csv', sep=';')
            
     def fechar_site(self):
         # Fechando o driver
@@ -150,7 +156,7 @@ class WebScrapingPMI:
 
 def main():
     pmi = WebScrapingPMI()
-    pmi.acessar_site(url_pmi='https://br.investing.com/economic-calendar/services-pmi-1062')
+    pmi.acessar_site(url_pmi='https://br.investing.com/economic-calendar/chinese-non-manufacturing-pmi-831')
     pmi.botao_propaganda()
     pmi.botao_hist()
     pmi.web_scraping_tabela()
