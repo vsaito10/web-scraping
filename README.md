@@ -17,5 +17,6 @@ Pasta 'dados-financ-econ':
 - 'yield-curve-leading-indicator': faz o download da planilha do FED NY do indicador yield curve leading indicator.
 
 Pasta 'dados-alternativos':
-- 'nivel-reservatorios': faz o scraping das porcentagens dos níveis dos reservatórios do Brasil.
-- 'abicom': faz o scraping das imagens do relatório da Abicom.
+- 'nivel-reservatorios': faz o scraping das porcentagens dos níveis dos reservatórios do Brasil;
+- 'abicom': faz o scraping das imagens do relatório da Abicom;
+- 'petroleo': faz o scraping das planilhas sobre petróleo (processamento e importação/exportação).
