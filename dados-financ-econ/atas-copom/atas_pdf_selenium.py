@@ -2,7 +2,6 @@ from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.common.by import By
 from time import sleep
-import os
 import re
 import requests
 
@@ -11,16 +10,16 @@ class AtasCopom:
     def __init__(self):
 
         # Diretório do download do arquivo 
-        self.path_download = r"C:\Users\vitor\projetos_python\python_b3\historico-arquivos\minutes-pdf"
+        self.path_download = r'C:\Users\vitor\projetos_python\python_b3\historico-arquivos\minutes-pdf'
 
         options = Options()
         #options.add_argument("--headless")
-        options.set_preference("browser.download.folderList", 2)  
-        options.set_preference("browser.download.dir", self.path_download)
-        options.set_preference("browser.download.useDownloadDir", True) 
-        options.set_preference("browser.download.viewableInternally.enabledTypes", "")  
-        options.set_preference("pdfjs.disabled", True)  
-        options.set_preference("plugin.disable_full_page_plugin_for_types", "application/pdf")  
+        options.set_preference('browser.download.folderList', 2)  
+        options.set_preference('browser.download.dir', self.path_download)
+        options.set_preference('browser.download.useDownloadDir', True) 
+        options.set_preference('browser.download.viewableInternally.enabledTypes', '')  
+        options.set_preference('pdfjs.disabled', True)  
+        options.set_preference('plugin.disable_full_page_plugin_for_types', 'application/pdf')  
 
         self.driver = webdriver.Firefox(options=options)
 
@@ -42,13 +41,13 @@ class AtasCopom:
         """
 
         # Url p/ extrair as datas de publicações que serão usadas para criar as urls de cada ata
-        url = "https://www.bcb.gov.br/api/servico/sitebcb/copomminutes/ultimas"
+        url = 'https://www.bcb.gov.br/api/servico/sitebcb/copomminutes/ultimas'
 
-        querystring = {"quantidade":"1000","filtro":""}
-        payload = ""
-        headers = {"sec-ch-ua": "^\^Chromium^^;v=^\^116^^, ^\^Not"}
+        querystring = {'quantidade': '1000', 'filtro': ''}
+        payload = ''
+        headers = {'sec-ch-ua': '^\^Chromium^^;v=^\^116^^, ^\^Not'}
 
-        r = requests.request("GET", url, data=payload, headers=headers, params=querystring)
+        r = requests.request('GET', url, data=payload, headers=headers, params=querystring)
         data = r.json()
 
         # Posição da ata inicial
@@ -95,7 +94,7 @@ class AtasCopom:
                     # Clicando no botão de download
                     botao_download = self.driver.find_element(By.XPATH, '//*[@id="publicacao"]/div[1]/div/div/div/div[1]/div[2]/download/div/div/a')
                     # Usando JavaScript para acionar o download diretamente
-                    self.driver.execute_script("arguments[0].click();", botao_download)                            
+                    self.driver.execute_script('arguments[0].click();', botao_download)                            
                     sleep(10)    
 
                     break  
@@ -109,10 +108,10 @@ class AtasCopom:
 
 def main():
     atas = AtasCopom()
-    atas.download_arquivo(pos_ata_inicial=46, pos_ata_final=57)
+    atas.download_arquivo(pos_ata_inicial=58, pos_ata_final=68)
     atas.fechar_site()
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()
 
