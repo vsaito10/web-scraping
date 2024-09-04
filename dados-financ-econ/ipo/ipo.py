@@ -63,7 +63,7 @@ class IpoB3:
             novo_nome_arquivo = os.path.join(self.download_directory, 'lista_ipo.xlsx')
             os.rename(novo_caminho, novo_nome_arquivo)
 
-
+            
 def main():
     ipo = IpoB3()
     ipo.baixar_arquivo()
