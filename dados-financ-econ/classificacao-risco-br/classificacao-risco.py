@@ -1,3 +1,4 @@
+from datetime import datetime
 from selenium import webdriver
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
@@ -40,8 +41,12 @@ class ClassificacaoRiscoBR:
         lista_arquivos.sort(key=lambda x: os.path.getmtime(os.path.join(self.path_download, x)))
         nome_original = os.path.join(self.path_download, lista_arquivos[-1])
 
+        # Obtendo a data em que foi feito o download e formantando a data
+        data_hoje = datetime.now().date()
+        data_formatada = data_hoje.strftime("%Y%m%d")
+
         # Novo nome do arquivo
-        novo_nome = os.path.join(self.path_download, 'classificacao_risco_br.csv')
+        novo_nome = os.path.join(self.path_download, f'classificacao_risco_br_{data_formatada}.csv')
 
         # Renomeando o arquivo
         os.rename(nome_original, novo_nome)
