@@ -1,5 +1,6 @@
-import requests
 from bs4 import BeautifulSoup
+from datetime import datetime
+import requests
 import os
 
 
@@ -59,8 +60,12 @@ class IpoB3:
             with open(novo_caminho, 'wb') as f:
                 f.write(response.content)
 
+            # Obtendo a data em que foi feito o download e formantando a data
+            data_hoje = datetime.now().date()
+            data_formatada = data_hoje.strftime("%Y%m%d")
+
             # Renomeando o arquivo para 'ipo.xlsx'
-            novo_nome_arquivo = os.path.join(self.download_directory, 'lista_ipo.xlsx')
+            novo_nome_arquivo = os.path.join(self.download_directory, f'lista_ipo_{data_formatada}.xlsx')
             os.rename(novo_caminho, novo_nome_arquivo)
 
             
