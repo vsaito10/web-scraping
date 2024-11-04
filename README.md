@@ -13,8 +13,9 @@ Pasta 'dados-financ-econ':
 - 'pmi': faz o scraping da tabela do PMI do site da Investing;
 - 'projecoes-ifi': faz o scraping da tabela de projeções do IFI;
 - 'proxy-rate': faz o download da planilha do proxy rate do site FED San Francisco;
-- 'titulos-publicos': faz o download da planilha dos títulos públicos (LTN, NTN-B e NTN-B principal) do Brasil;
+- 'rmd': faz o download dos arquivos do relatório mensal da dívida (RMD);
 - 'sp500-ratios': faz o scraping das tabelas dos indicadores S&P500 PE e S&P500 EY;
+- 'titulos-publicos': faz o download da planilha dos títulos públicos (LTN, NTN-B e NTN-B principal) do Brasil;
 - 'yield-curve-leading-indicator': faz o download da planilha do FED NY do indicador yield curve leading indicator.
 
 Pasta 'dados-alternativos':
