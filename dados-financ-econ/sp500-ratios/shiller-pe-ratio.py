@@ -27,7 +27,7 @@ class ShillerPE:
 
     def download_planilha(self):
         # Tabela 
-        planilha = self.soup.find_all('div', class_='x-el x-el-div c1-1 c1-2 c1-1k c1-1t c1-1u c1-54 c1-1e c1-1w c1-1x c1-55 c1-1z c1-b c1-c c1-22 c1-23 c1-56 c1-25 c1-d c1-57 c1-58 c1-e c1-f c1-g')
+        planilha = self.soup.find_all('div', class_='x-el x-el-div c1-1 c1-2 c1-w c1-5a c1-5b c1-29 c1-5c c1-5d c1-v c1-5e c1-5f c1-1d c1-56 c1-1c c1-b c1-c c1-d c1-e c1-f c1-g')
         
         # Lista para guardar os hrefs
         href_links = [] 
@@ -36,6 +36,7 @@ class ShillerPE:
                 href = link.get('href')
                 href_links.append(href)
 
+        print(href_links)
         # O 'href_links' vai conter dois links - o link da planilha é o segundo
         # String do href -> '//img1.wsimg.com/blobby/go/e5e77e0b-59d1-44d9-ab25-4763ac982e53/downloads/ie_data.xls?ver=1714742730434'
         link_planilha = href_links[1]
