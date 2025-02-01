@@ -43,7 +43,7 @@ response = requests.post(
 # Transformando em JSON 
 nfib = response.json()
 
-# Convertendo a lista em um DataFrame
+# Convertendo o json em um DataFrame
 df_small_business_optimism = pd.DataFrame(nfib)
 
 # Substituindo o '/' por '-'
