@@ -56,4 +56,7 @@ df_small_business_optimism['monthyear'] = pd.to_datetime(df_small_business_optim
 ultima_data = df_small_business_optimism['monthyear'].iloc[0].strftime('%Y-%m-%d').replace('-', '_')
 
 # Transformando em um arquivo excel
-df_small_business_optimism.to_excel(f'C://Users/vitor/projetos_python/python_b3/web-scraping/dados-financ-econ/nfib/nfib_{ultima_data}.xlsx', index=False)
+df_small_business_optimism.to_excel(
+    f'C://Users/vitor/projetos_python/python_b3/web-scraping/dados-financ-econ/small_business_optimism/small_business_optimism_{ultima_data}.xlsx', 
+    index=False
+)
