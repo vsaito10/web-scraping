@@ -1,5 +1,5 @@
 import pandas as pd
-import requests
+from curl_cffi import requests
 
 
 """
@@ -44,7 +44,7 @@ class PMI:
     # Buscando os dados do PMI via requisição HTTP
     def fetch_data(self):
         # Fazendo a requisição GET para a URL do PMI
-        response = requests.get(f'https://sbcharts.investing.com/events_charts/eu/{self.num_tipo_pmi}.json', headers=self.headers)
+        response = requests.get(f'https://sbcharts.investing.com/events_charts/eu/{self.num_tipo_pmi}.json', headers=self.headers, impersonate='chrome')
         return response.json()
 
     # Processando os dados do PMI
@@ -82,7 +82,7 @@ class PMI:
 
 if __name__ == "__main__":
     # Número da URL do site Investing do PMI
-    num_tipo_pmi = '829'
+    num_tipo_pmi = '831'
     # Caminho onde o arquivo será salvo
     base_path = 'C:/Users/vitor/projetos_python/python_b3/web-scraping/dados-financ-econ/pmi/atualizado'
     
