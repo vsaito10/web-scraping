@@ -9,3 +9,7 @@ pyvenv.cfg
 *.xls
 *.csv
 *.pdf
+*__
+.gitignore
+*.ipynb
+*.zip
