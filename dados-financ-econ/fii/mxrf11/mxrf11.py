@@ -21,7 +21,7 @@ class MXRF11:
         }
 
         json_data = {
-            'year': '2024',
+            'year': '2025',
             'categories': [
                 'regulamento',
                 'relatorios_gerenciais',
@@ -49,11 +49,15 @@ class MXRF11:
         # JSON
         self.json_mxrf = response.json()
 
+        # Salvando o arquivo json
+        # with open('C://Users//vitor//projetos_python//python_b3//web-scraping//dados-financ-econ//fii//mxrf11//mxrf.json', 'w', encoding='utf-8') as f:
+        #     json.dump(self.json_mxrf, f, ensure_ascii=False, indent=4)
+
     def download_arquivo(self):
-        # Iterando sobre os itens de 'document_metas' e filtrando por 'file_origin' == 'UPLOAD'
+        # Iterando sobre os itens de 'document_metas' e filtrando por 'internal_name' == 'planilha_de_fundamentos'
         document_metas = self.json_mxrf['data']['document_metas']
         # Lista que contém todos as planilhas de fundamentos do site
-        itens_upload = [item for item in document_metas if item.get('file_origin') == 'UPLOAD']
+        itens_upload = [item for item in document_metas if item.get('internal_name') == 'planilha_de_fundamentos']
 
         # Verificando se a lista não está vazia
         if itens_upload:  
@@ -103,7 +107,7 @@ class MXRF11:
                 print('Erro ao baixar o arquivo.')
                 
         else:
-            print("Nenhum item encontrado com 'file_origin' igual a 'UPLOAD'.")
+            print("Nenhum item encontrado com 'internal_name' igual a 'planilha_de_fundamentos'.")
 
 def main():
     mxrf11 = MXRF11()
