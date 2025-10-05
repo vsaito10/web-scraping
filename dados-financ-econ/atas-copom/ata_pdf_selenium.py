@@ -26,11 +26,11 @@ class AtasCopom:
         sleep(1)
 
         # Clicando no botão de cookie
-        botao_cookie = self.driver.find_element(By.XPATH, '/html/body/app-root/bcb-cookies/div/div/div/div/button[2]').click()
+        botao_cookie = self.driver.find_element(By.XPATH, '/html/body/app-root/bcb-cookie-bar/div/div/div[2]/button[3]').click()
         sleep(1)
 
         # Clicando no botão de download
-        botao_download = self.driver.find_element(By.XPATH, '//*[@id="publicacao"]/div[1]/div/div/div/div[1]/div[2]/download/div/div/a')
+        botao_download = self.driver.find_element(By.XPATH, '//*[@id="publicacao"]/div[1]/div/div/div/div[1]/div[2]/download/div/a')
         # Usando JavaScript para acionar o download diretamente
         self.driver.execute_script('arguments[0].click();', botao_download)                            
         sleep(10)            
@@ -44,7 +44,7 @@ class AtasCopom:
 
 def main():
     atas = AtasCopom()
-    atas.acessar_site(url_path='https://www.bcb.gov.br/en/publications/copomminutes/31072024')
+    atas.acessar_site(url_path='https://www.bcb.gov.br/en/publications/copomminutes/17092025')
     atas.fechar_site()
 
 
