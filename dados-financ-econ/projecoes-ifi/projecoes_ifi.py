@@ -1,9 +1,8 @@
-import requests
-from bs4 import BeautifulSoup
 import re
+import requests
 import pandas as pd
-import numpy as np
-from datetime import datetime
+from bs4 import BeautifulSoup
+from typing import Optional
 
 
 class WebScrapingProjecoesIFI:
@@ -19,91 +18,150 @@ class WebScrapingProjecoesIFI:
             'Connection': 'close'
         }
 
+        # Mapeando de meses para número
+        self.map_meses = {
+            'Janeiro': '01', 
+            'Fevereiro': '02', 
+            'Março': '03',
+            'Abril': '04', 
+            'Maio': '05', 
+            'Junho': '06',
+            'Julho': '07', 
+            'Agosto': '08', 
+            'Setembro': '09',
+            'Outubro': '10', 
+            'Novembro': '11', 
+            'Dezembro': '12'
+        }
+
+    def _parse_number(self, text: str) -> Optional[float]:
+        """Tratando os números da tabela do site do IFI"""
+        if text is None:
+            return None
+        s = str(text).strip()
+        # Removendo espaços estranhos
+        s = s.replace('\xa0', '').replace('\u200b', '').strip()
+        # Permitindo sinais negativos com espaços (ex: ' -87,4' ou '- 87,4')
+        s = s.replace('- ', '-').replace(' -', '-')
+        # Removendo 'R$' e '%' 
+        s = s.replace('R$', '').replace('%', '').strip()
+        if s == '':
+            return None
+        # Quando houver vírgula decimal, removendo pontos de milhares
+        if '.' in s and ',' in s:
+            s = s.replace('.', '').replace(',', '.')
+        else:
+            # Se só tiver vírgula, trocando por ponto
+            if ',' in s and '.' not in s:
+                s = s.replace(',', '.')
+            else:
+                # Se só tiver pontos e não houver parte decimal curta, removendo pontos (milhares)
+                if s.count('.') > 1:
+                    s = s.replace('.', '')
+                else:
+                    # Se houver um ponto e parece decimal (1-3 casas), assumindo decimal
+                    if s.count('.') == 1 and re.search(r'\.\d{1,3}$', s):
+                        pass
+                    else:
+                        # Caso ambíguo: removendo pontos
+                        s = s.replace('.', '')
+        # Limpando possíveis caracteres não numéricos finais
+        s = re.sub(r'[^\d\.\-]', '', s)
+        try:
+            return float(s)
+        except Exception:
+            return None
+
     def web_scraping_data(self):
         # Fazendo a requisição HTTP para obter o conteúdo da página
-        response = requests.get(self.url, headers=self.headers)
+        resp = requests.get(self.url, headers=self.headers, timeout=15)
 
         # Criando o objeto BeautifulSoup para analisar o conteúdo HTML da página
-        soup = BeautifulSoup(response.content, 'html.parser')
+        resp.raise_for_status()
+        soup = BeautifulSoup(resp.text, 'html.parser')
 
-        # Encontrando os elementos textuais
-        elements_str = soup.find_all(
-            'div', class_='col-xs-8 linha-simples-titulo'
-        )
-        # Encontrando os elementos numéricos
-        elements_num = soup.find_all(
-            'div', class_='col-xs-1 linha-simples-dado'
-        )
-        # Encontrando a data que a tabela foi atualizada
-        data_atualizada = soup.find_all('ul', class_='projecoes-ul-linha')
+        # Data que tabela foi lançada
+        tag = soup.find('h4', class_='ifi-raf')
+        texto = tag.get_text(strip=True)
+        m = re.search(r'\(([^)]+)\)', texto)  # Exemplo: 'RAF 104 (Setembro de 2025)'
+        conteudo = m.group(1)
+        partes = conteudo.split(' de ')
+        mes_nome, ano = partes
+        mes_num = self.map_meses.get(mes_nome.strip(), None)
 
-        # Criando uma lista dos dados extraidos p/ transformar em um df. Listas que possuem uma condição que não extrai vazios
-        list_txt = [element.text.strip()
-                    for element in elements_str if element.text.strip()]
-        list_num = [element.text.strip()
-                    for element in elements_num if element.text.strip()]
-        list_data_atualizada = [element.text.strip(
-        ) for element in data_atualizada if element.text.strip()]
+        # Tabela
+        cards = soup.select('div.box')
+        rows = []
 
-        # Selecionando apenas parte útil da string 'Última atualização: 25/05/2023 (RAF nº 76)'
-        data_atualizacao = re.findall(
-            r'\d{2}/\d{2}/\d{4}', list_data_atualizada[0])
-        data_atualizacao = data_atualizacao[0]
+        # regex para capturar padrões como "2025: 12.671,5" mesmo dentro de tags <strong>
+        pattern = re.compile(r'(20\d{2})\s*:\s*([-]?\s*[\d\.,]+)', flags=re.IGNORECASE)
 
-        # Formatando a data '25/05/2023' para '20230525'
-        data_obj = datetime.strptime(data_atualizacao, '%d/%m/%Y')
-        # Data da última atualização p/ nomear o arquivo csv
-        data_formatada = data_obj.strftime('%Y%m%d')
-        # Data da última atualização p/ servir como index do df
-        data_formatada_index = data_obj.strftime('%Y-%m-%d')
-        # Criando uma lista com a data atualizada repitida 13 vezes
-        lista_datas = [data_formatada_index for _ in range(13)]
-        # Transformando a lista em um array NumPy
-        array_datas = np.array(lista_datas)
-        # Criando a matriz com 13 linhas e 1 coluna
-        matriz_datas = array_datas.reshape(13, 1)
-        lista_data_1d = matriz_datas.ravel()
-        # Criando um df da data de atualização
-        df_data_formatada = pd.DataFrame(lista_data_1d)
+        for card in cards:
+            # extrair título e subtítulo (se existirem)
+            h4 = card.find('h4')
+            title = h4.get_text(strip=True) if h4 else None
 
-        # Criando o df dos tópicos
-        df_topics = pd.DataFrame(list_txt, columns=['Topics'])
+            # subtítulo: pegar <p> com style ou o primeiro <p> com texto que não seja get-text vazio
+            subtitle = None
+            p_style = card.find('p', attrs={'style': True})
+            if p_style and p_style.get_text(strip=True):
+                subtitle = p_style.get_text(strip=True)
 
-        # Criando o df dos números
-        # Retorna os dados de 2023 e 2024 em apenas uma coluna -> Dados de 2023 (index pares) e 2024 (index ímpares)
-        df_nums = pd.DataFrame(list_num, columns=['Num'])
-        # Selecionando apenas as linhas que estão em um index par
-        values_2023 = [df_nums['Num'][i]
-                       for i in range(len(df_nums)) if i % 2 == 0]
-        # Selecionando apenas as linhas que estão em um index ímpares
-        values_2024 = [df_nums['Num'][i]
-                       for i in range(len(df_nums)) if i % 2 != 0]
-        # Criando um df com os dados númericos das projeções dos anos
-        df_nums = pd.DataFrame({'2023': values_2023, '2024': values_2024})
-        # Excluindo a primeira linha que são os anos (2023 e 2024)
-        df_nums = df_nums.drop(df_nums.index[0])
-        # O index atual desse df é de 1 a 13. Resetando o index para ficar igual ao index do df_topics (0 a 12) p/ fazer o merge
-        df_nums = df_nums.reset_index(drop=True)
+            # procurar todas as ocorrências de "YYYY: valor" dentro do HTML do card
+            card_html = str(card)
+            matches = pattern.findall(card_html)
 
-        # Mesclando os tres dfs
-        df_projecoes_ifi = pd.merge(df_topics.merge(
-            df_nums, left_index=True, right_index=True), df_data_formatada, left_index=True, right_index=True)
-        # Renomeando a coluna 0 para 'Data'
-        df_projecoes_ifi = df_projecoes_ifi.rename(columns={0: 'Data'})
-        # Colocando a coluna 'Data' como index do df
-        df_projecoes_ifi = df_projecoes_ifi.set_index('Data')
+            if matches:
+                for year_str, val_str in matches:
+                    # val_str pode conter espaços: normalizar antes de parsear
+                    val_clean = val_str.replace(' ', '')
+                    value = self._parse_number(val_clean)
+                    rows.append({
+                        'indicador': title,
+                        'subtitulo': subtitle,
+                        'ano': int(year_str),
+                        'valor': value
+                    })
+            else:
+                # fallback: procurar no texto plano do card por "20xx" e algum número próximo (heurística)
+                text = card.get_text(' ', strip=True)
+                # tentar encontrar "2025" e o primeiro número depois dela
+                alt_matches = re.findall(r'(20\d{2}).{0,15}?([-]?\s*[\d\.,]+)', text)
+                if alt_matches:
+                    for year_str, val_str in alt_matches:
+                        val_clean = val_str.replace(' ', '')
+                        value = self._parse_number(val_clean)
+                        rows.append({
+                            'indicador': title,
+                            'subtitulo': subtitle,
+                            'ano': int(year_str),
+                            'valor': value
+                        })
 
-        # Tranformando em arquivo csv
-        df_projecoes_ifi.to_csv(
-            f'C://Users//vitor//projetos_python//python_b3//web-scraping//dados-financ-econ//projecoes-ifi//projecoes_ifi_{data_formatada}.csv',
-            sep=';'
-        )
+        # Transformando em um df
+        df = pd.DataFrame(rows)
+
+        # Tabela pivot para colunas por ano
+        pivot = df.pivot_table(index=['indicador', 'subtitulo'], columns='ano', values='valor', aggfunc='first').reset_index()
+        pivot.columns.name = None
+        # renomear colunas de anos para 'YYYY'
+        new_cols = []
+        for c in pivot.columns:
+            if isinstance(c, int) or (isinstance(c, str) and c.isdigit()):
+                new_cols.append(f"{int(c)}")
+            else:
+                new_cols.append(c)
+        pivot.columns = new_cols
+
+        # Transformando em arquivo csv
+        filename = f'C://Users//vitor//projetos_python//python_b3//web-scraping//dados-financ-econ//projecoes-ifi//projecoes_IFI_{mes_num}{ano}.csv'
+        pivot.to_csv(filename, index=False, encoding='utf-8-sig')
 
 
 def main():
     ifi = WebScrapingProjecoesIFI()
     ifi.web_scraping_data()
-
+    
 
 if __name__ == "__main__":
     main()
