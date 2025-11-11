@@ -74,7 +74,7 @@ class WebScrapingProjecoesIFI:
 
     def web_scraping_data(self):
         # Fazendo a requisição HTTP para obter o conteúdo da página
-        resp = requests.get(self.url, headers=self.headers, timeout=15)
+        resp = requests.get(self.url, headers=self.headers, timeout=15, verify=False)
 
         # Criando o objeto BeautifulSoup para analisar o conteúdo HTML da página
         resp.raise_for_status()
