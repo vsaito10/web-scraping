@@ -18,9 +18,9 @@ class WebScrapingTitulosPublicos:
     def loop_download_arquivo(self):
         # Lista com as URLs dos downloads dos arquivos. Esses links são do site https://www.tesourodireto.com.br/titulos/historico-de-precos-e-taxas.htm
         links = [
-            'https://cdn.tesouro.gov.br/sistemas-internos/apex/producao/sistemas/sistd/2023/NTN-B_2023.xls',
-            'https://cdn.tesouro.gov.br/sistemas-internos/apex/producao/sistemas/sistd/2023/NTN-B_Principal_2023.xls',
-            'https://cdn.tesouro.gov.br/sistemas-internos/apex/producao/sistemas/sistd/2023/LTN_2023.xls',
+            'https://cdn.tesouro.gov.br/sistemas-internos/apex/producao/sistemas/sistd/2025/NTN-B_2025.xls',
+            'https://cdn.tesouro.gov.br/sistemas-internos/apex/producao/sistemas/sistd/2025/NTN-B_Principal_2025.xls',
+            'https://cdn.tesouro.gov.br/sistemas-internos/apex/producao/sistemas/sistd/2025/LTN_2025.xls',
         ]
 
         for link in links:
