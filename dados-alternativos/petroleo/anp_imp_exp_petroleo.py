@@ -10,7 +10,7 @@ class ImpExpPetroleoANP:
     def __init__(self):
 
         # Diretório do download do arquivo
-        self.download_directory = 'C://Users//vitor//projetos_python//python_b3//web-scraping//dados-alternativos//petroleo'
+        self.download_directory = 'C://B3//web-scraping//dados-alternativos//petroleo'
         
         url = 'https://dados.gov.br/api/publico/conjuntos-dados/importacoes-e-exportacoes'
 
@@ -19,9 +19,9 @@ class ImpExpPetroleoANP:
             "accept-language": "pt-BR,pt;q=0.8",
             "priority": "u=1, i",
             "referer": "https://dados.gov.br/dados/conjuntos-dados/importacoes-e-exportacoes",
-            "^sec-ch-ua": "^\^Brave^^;v=^\^125^^, ^\^Chromium^^;v=^\^125^^, ^\^Not.A/Brand^^;v=^\^24^^^",
+            "sec-ch-ua": '"Brave";v="125", "Chromium";v="125", "Not.A/Brand";v="24"',
             "sec-ch-ua-mobile": "?0",
-            "^sec-ch-ua-platform": "^\^Windows^^^",
+            "sec-ch-ua-platform": '"Windows"',
             "sec-fetch-dest": "empty",
             "sec-fetch-mode": "cors",
             "sec-fetch-site": "same-origin",
