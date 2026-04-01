@@ -47,7 +47,7 @@ class WebScrapingSP500EY:
         # Invertendo as linhas do df
         df = df[::-1]
         # Transformando em um arquivo csv
-        df.to_csv('C://Users//vitor//projetos_python//python_b3//web-scraping//dados-financ-econ//sp500-ratios//sp500_ey.csv')
+        df.to_csv('C://B3//web-scraping//dados-financ-econ//sp500-ratios//sp500_ey.csv')
 
     def fechar_site(self):
         self.driver.quit()
