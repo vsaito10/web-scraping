@@ -120,7 +120,7 @@ class AbrasMercado:
 
         # Transformando em um arquivo csv
         self.df.to_csv(
-            f'C://Users//vitor//projetos_python//python_b3//web-scraping//dados-alternativos//abrasmercado//abrasmercado_{last_date}.csv', 
+            f'C://B3//web-scraping//dados-alternativos//abrasmercado//abrasmercado_{last_date}.csv', 
             sep=';'
         )
 
