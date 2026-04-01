@@ -20,7 +20,7 @@ class RigCounts:
     # Buscando os dados da contagem de sondas via requisição HTTP
     def fetch_data(self):
         # Fazendo a requisição GET para a URL da contagem de sondas
-        response = requests.get(f'https://sbcharts.investing.com/events_charts/eu/1652.json', headers=self.headers, impersonate='chrome')
+        response = requests.get('https://sbcharts.investing.com/events_charts/eu/1652.json', headers=self.headers, impersonate='chrome')
         return response.json()
 
     # Processando os dados da contagem de sondas
@@ -58,7 +58,7 @@ class RigCounts:
 
 if __name__ == "__main__":
     # Caminho onde o arquivo será salvo
-    base_path = 'C:/Users/vitor/projetos_python/python_b3/web-scraping/dados-alternativos/rig-counts'
+    base_path = 'C:/B3/web-scraping/dados-alternativos/rig-counts'
     
     rig_counts = RigCounts()
     rig_counts.run(base_path)
