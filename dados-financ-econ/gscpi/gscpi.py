@@ -26,4 +26,4 @@ df = pd.read_csv(
 )
 
 # Transformando o df em um arquivo csv
-df.to_csv('C://Users//vitor//projetos_python//python_b3//web-scraping//dados-financ-econ//gscpi//gscpi.csv', sep=';')
+df.to_csv('C://B3//web-scraping//dados-financ-econ//gscpi//gscpi.csv', sep=';')
