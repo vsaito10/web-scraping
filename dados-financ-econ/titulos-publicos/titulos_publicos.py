@@ -6,7 +6,7 @@ class WebScrapingTitulosPublicos:
     def __init__(self):
 
         # Diretório do download do arquivo
-        self.download_directory = 'C://Users//vitor//projetos_python//python_b3//web-scraping//dados-financ-econ//titulos-publicos//dados'
+        self.download_directory = 'C://B3//web-scraping//dados-financ-econ//titulos-publicos//dados'
 
     def download_arquivo(self, url):
         response = requests.get(url)
@@ -18,9 +18,9 @@ class WebScrapingTitulosPublicos:
     def loop_download_arquivo(self):
         # Lista com as URLs dos downloads dos arquivos. Esses links são do site https://www.tesourodireto.com.br/titulos/historico-de-precos-e-taxas.htm
         links = [
-            'https://cdn.tesouro.gov.br/sistemas-internos/apex/producao/sistemas/sistd/2025/NTN-B_2025.xls',
-            'https://cdn.tesouro.gov.br/sistemas-internos/apex/producao/sistemas/sistd/2025/NTN-B_Principal_2025.xls',
-            'https://cdn.tesouro.gov.br/sistemas-internos/apex/producao/sistemas/sistd/2025/LTN_2025.xls',
+            'https://cdn.tesouro.gov.br/sistemas-internos/apex/producao/sistemas/sistd/2026/NTN-B_2026.xls',
+            'https://cdn.tesouro.gov.br/sistemas-internos/apex/producao/sistemas/sistd/2026/NTN-B_Principal_2026.xls',
+            'https://cdn.tesouro.gov.br/sistemas-internos/apex/producao/sistemas/sistd/2026/LTN_2026.xls',
         ]
 
         for link in links:

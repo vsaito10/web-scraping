@@ -77,7 +77,7 @@ class YieldCurveFedNy:
         ultima_data = ultima_data.replace('/', '')
 
         # Transformando em um arquivo csv
-        df_yield_curve.to_csv(f'C://Users//vitor//projetos_python//python_b3//web-scraping//dados-financ-econ//yield-curve-leading-indicator//{ultima_data}_yield_curve.csv')
+        df_yield_curve.to_csv(f'C://B3//web-scraping//dados-financ-econ//yield-curve-leading-indicator//{ultima_data}_yield_curve.csv')
 
 
 def main():

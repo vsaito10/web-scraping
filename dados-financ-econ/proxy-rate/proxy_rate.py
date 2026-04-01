@@ -7,7 +7,7 @@ import os
 class WebScrapingProxyRate:
     def __init__(self):
         # Diretório do download do arquivo
-        self.download_directory = 'C://Users//vitor//projetos_python//python_b3\web-scraping//dados-financ-econ//proxy-rate'
+        self.download_directory = 'C://B3//web-scraping//dados-financ-econ//proxy-rate//'
 
         self.headers = {
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36',

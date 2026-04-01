@@ -1,6 +1,10 @@
 import pandas as pd
 import requests
+import urllib3
 
+
+# Suprime o aviso de SSL
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 headers = {
     'Accept': 'application/json, text/javascript, */*; q=0.01',
@@ -34,7 +38,7 @@ data = {
 }
 
 response = requests.post(
-    'http://open.api.nfib-sbet.org/rest/sbetdb/_proc/getIndicators2',
+    'https://open.api.nfib-sbet.org/rest/sbetdb/_proc/getIndicators2',
     headers=headers,
     data=data,
     verify=False,
@@ -57,6 +61,6 @@ ultima_data = df_small_business_optimism['monthyear'].iloc[0].strftime('%Y-%m-%d
 
 # Transformando em um arquivo excel
 df_small_business_optimism.to_excel(
-    f'C://Users/vitor/projetos_python/python_b3/web-scraping/dados-financ-econ/small_business_optimism/small_business_optimism_{ultima_data}.xlsx', 
+    f'C:/B3/web-scraping/dados-financ-econ/small_business_optimism/small_business_optimism_{ultima_data}.xlsx', 
     index=False
 )
