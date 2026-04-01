@@ -4,7 +4,7 @@ import pandas as pd
 
 # URL ANEEL
 # Estou puxando os 200 primeiros resultados - essa base de dados começa em '2015-01-01'
-url = 'https://dadosabertos.aneel.gov.br/api/3/action/datastore_search?resource_id=0591b8f6-fe54-437b-b72b-1aa2efd46e42&limit=200'
+url = 'https://dadosabertos.aneel.gov.br/api/3/action/datastore_search?resource_id=0591b8f6-fe54-437b-b72b-1aa2efd46e42&limit=5'
 
 # Headers
 headers = {
@@ -37,7 +37,7 @@ try:
     df_bandeira_tarifaria = df_bandeira_tarifaria.set_index('DatCompetencia')
 
     # Transformando em um arquivo csv
-    df_bandeira_tarifaria.to_csv('C://Users//vitor//projetos_python//python_b3//web-scraping//dados-alternativos//bandeira-tarifaria//bandeira_tarifaria.csv', sep=';')
+    df_bandeira_tarifaria.to_csv('C://B3//web-scraping//dados-alternativos//bandeira-tarifaria//bandeira_tarifaria.csv', sep=';')
 
 except requests.exceptions.Timeout:
     print(f'Erro: A requisição expirou (Timeout após {timeout_segundos} segundos).')
