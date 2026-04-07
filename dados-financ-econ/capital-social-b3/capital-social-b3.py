@@ -64,7 +64,7 @@ class WebScrapingCapitalSocial:
         if self.all_data:
             df = pd.DataFrame(self.all_data)
             df.to_csv(
-                'C://Users//vitor//projetos_python//python_b3//web-scraping//dados-financ-econ//capital-social-b3//capital_social.csv',
+                'C://B3//web-scraping//dados-financ-econ//capital-social-b3//capital_social.csv',
                 sep=';',
                 index=False
             )
