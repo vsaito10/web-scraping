@@ -6,8 +6,8 @@ import os
 
 class IpoB3:
     def __init__(self):
-        # Diretório do download do arquivo
-        self.download_directory = 'C://Users//vitor//projetos_python//python_b3//web-scraping//dados-financ-econ//ipo//'
+        # Diretório do download do arquivo (mesma pasta deste script)
+        self.download_directory = os.path.dirname(os.path.abspath(__file__))
 
         # URL
         self.url = 'https://www.b3.com.br/pt_br/produtos-e-servicos/solucoes-para-emissores/ofertas-publicas/estatisticas/'
@@ -28,15 +28,15 @@ class IpoB3:
         
     def baixar_arquivo(self):
 
-        # Tabela excel dos IPOs (find all 'a' tags within 'div' with class 'content')
-        planilha = self.soup.find_all('div', class_='content')
+        # Tabela excel dos IPOs: pega todos os links '.xlsx' da página
+        ipos_links = [
+            link.get('href')
+            for link in self.soup.find_all('a')
+            if link.get('href') and link.get('href').lower().endswith('.xlsx')
+        ]
 
-         # Lista para guardar os hrefs
-        ipos_links = [] 
-        for item in planilha:
-            for link in item.find_all('a'):
-                href = link.get('href')
-                ipos_links.append(href)
+        if not ipos_links:
+            raise ValueError('Nenhum link .xlsx encontrado na página da B3 (a estrutura do site pode ter mudado).')
 
         # String do href -> "../../../../../data/files/DC/E0/7E/D6/16EAE8100E866AE8AC094EA8/Ofertas%20Publicas%20_Imprensa_%20-%20Marco.24%20_SITE_.xlsx"
         link_planilha = ipos_links[-1]
