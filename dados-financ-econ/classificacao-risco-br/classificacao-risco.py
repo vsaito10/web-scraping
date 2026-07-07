@@ -1,8 +1,9 @@
 from datetime import datetime
 from selenium import webdriver
-from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
 from selenium.webdriver.firefox.options import Options
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 from time import sleep
 import os
 
@@ -11,8 +12,8 @@ class ClassificacaoRiscoBR:
     def __init__(self):
         options = Options()
 
-        # Diretório do download do arquivo 
-        self.path_download = r'C:\Users\vitor\projetos_python\python_b3\web-scraping\dados-financ-econ\classificacao-risco-br'
+        # Diretório do download do arquivo (mesma pasta deste script)
+        self.path_download = os.path.dirname(os.path.abspath(__file__))
 
         options = Options()
         #options.add_argument("--headless")
@@ -30,12 +31,40 @@ class ClassificacaoRiscoBR:
         sleep(1)
 
     def download_arquivo(self):
-        # Download do arquivo excel
-        botao_download = self.driver.find_element(By.XPATH, '//*[@id="B203132468640086541"]').click()
+        # Espera explícita: o painel/botão do APEX pode demorar a carregar
+        wait = WebDriverWait(self.driver, 20)
+
+        # Localiza o botão pelo texto visível "Download" (cobre <button> e <a>).
+        # Mais estável que posição (li[3]) ou ID dinâmico do APEX.
+        xpath_botao = (
+            "//button[contains(normalize-space(.), 'Download')]"
+            " | //a[contains(normalize-space(.), 'Download')]"
+        )
+
+        # Espera o botão ficar clicável e rola até ele
+        botao_download = wait.until(EC.element_to_be_clickable((By.XPATH, xpath_botao)))
+        self.driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", botao_download)
+
+        # Tenta o clique normal; se algo interceptar, cai para o clique via JS
+        try:
+            botao_download.click()
+        except Exception:
+            self.driver.execute_script("arguments[0].click();", botao_download)
+
         sleep(5)
 
-        # Lista os arquivos dentro do diretório de download
-        lista_arquivos = os.listdir(self.path_download)
+        # Lista apenas os arquivos de planilha baixados (evita renomear o próprio script)
+        extensoes_validas = ('.xlsx', '.xls', '.csv', '.ods')
+        lista_arquivos = [
+            f for f in os.listdir(self.path_download)
+            if f.lower().endswith(extensoes_validas)
+        ]
+
+        if not lista_arquivos:
+            raise FileNotFoundError(
+                f'Nenhum arquivo de planilha foi baixado em {self.path_download}. '
+                'O download pode ter falhado.'
+            )
 
         # Obtendo o nome do último arquivo baixado no diretório de download
         lista_arquivos.sort(key=lambda x: os.path.getmtime(os.path.join(self.path_download, x)))
