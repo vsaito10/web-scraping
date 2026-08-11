@@ -1,9 +1,9 @@
+import os
+from time import sleep
+
 from selenium import webdriver
-from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
 from selenium.webdriver.firefox.options import Options
-from time import sleep
-import os
 
 
 class KNCR11:
@@ -30,11 +30,11 @@ class KNCR11:
 
     def download_arquivo(self):
         # Botão do cookie
-        botao_cookie = self.driver.find_element(By.XPATH, '//*[@id="modal-comunicado"]/div/div[2]').click()
+        botao_cookie = self.driver.find_element(By.XPATH, '//*[@id="modal-comunicado"]/div/div[2]').click()  # noqa: F841
         sleep(1)
 
         # Download do arquivo excel
-        botao_download = self.driver.find_element(By.XPATH, '//*[@id="Documentos"]/div/div/div/div[2]/div/div/div/table/tbody/tr[6]/td[3]/div').click()
+        botao_download = self.driver.find_element(By.XPATH, '//*[@id="Documentos"]/div/div/div/div[2]/div/div/div/table/tbody/tr[6]/td[3]/div').click()  # noqa: F841
         sleep(5)
 
         # Data do arquivo
