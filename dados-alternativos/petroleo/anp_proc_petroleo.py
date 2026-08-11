@@ -1,7 +1,7 @@
 import os
-import requests
 import warnings
 
+import requests
 
 # Ignorar avisos de SSL
 warnings.filterwarnings('ignore', message='Unverified HTTPS request')
