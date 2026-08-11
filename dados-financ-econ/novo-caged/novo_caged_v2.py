@@ -1,9 +1,10 @@
+from time import sleep
+
+import requests
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.firefox.options import Options
-from time import sleep
-import requests
 
 
 class NovoCaged:

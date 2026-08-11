@@ -1,7 +1,7 @@
-from bs4 import BeautifulSoup
-import requests
 import re
-import os
+
+import requests
+from bs4 import BeautifulSoup
 
 
 class WebScrapingCaged:

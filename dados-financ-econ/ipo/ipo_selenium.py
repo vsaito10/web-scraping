@@ -1,9 +1,9 @@
+import os
+from time import sleep
+
 from selenium import webdriver
-from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
 from selenium.webdriver.firefox.options import Options
-from time import sleep
-import os
 
 
 class IpoB3:
@@ -29,13 +29,13 @@ class IpoB3:
         sleep(1)
 
         # Clicando no botão de cookie
-        botao_cookie = self.driver.find_element(By.XPATH, '//*[@id="onetrust-accept-btn-handler"]').click()
+        botao_cookie = self.driver.find_element(By.XPATH, '//*[@id="onetrust-accept-btn-handler"]').click()  # noqa: F841
         sleep(1)
 
     def download_arquivo(self):
 
         # Download do arquivo excel
-        botao_ano = self.driver.find_element(By.XPATH, '//*[@id="conteudo-principal"]/div[4]/div/div/div/div[1]/div[2]/p/a[2]').click()
+        botao_ano = self.driver.find_element(By.XPATH, '//*[@id="conteudo-principal"]/div[4]/div/div/div/div[1]/div[2]/p/a[2]').click()  # noqa: F841
         sleep(5)
 
         # Lista os arquivos dentro do diretório de download

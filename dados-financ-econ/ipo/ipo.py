@@ -1,7 +1,13 @@
-from bs4 import BeautifulSoup
-from datetime import datetime
-import requests
 import os
+from datetime import datetime
+from urllib.parse import urljoin
+from zoneinfo import ZoneInfo
+
+import requests
+from bs4 import BeautifulSoup
+
+# Fuso da B3 (horário de Brasília), usado para determinar a "data de hoje"
+TZ_SAO_PAULO = ZoneInfo('America/Sao_Paulo')
 
 
 class IpoB3:
@@ -41,11 +47,8 @@ class IpoB3:
         # String do href -> "../../../../../data/files/DC/E0/7E/D6/16EAE8100E866AE8AC094EA8/Ofertas%20Publicas%20_Imprensa_%20-%20Marco.24%20_SITE_.xlsx"
         link_planilha = ipos_links[-1]
 
-        # Removendo a parte inicial da string
-        link_planilha = link_planilha.strip('../../../')
-
-        # Adicionando a string que falta p/ formar o link de download
-        link_planilha = 'https://www.b3.com.br/' + link_planilha
+        # Resolvendo o caminho relativo ('../../../data/files/...') contra a URL da página
+        link_planilha = urljoin(self.url, link_planilha)
 
         # Requisição para o link de download da planilha
         response = requests.get(link_planilha, headers=self.headers)
@@ -61,7 +64,7 @@ class IpoB3:
                 f.write(response.content)
 
             # Obtendo a data em que foi feito o download e formantando a data
-            data_hoje = datetime.now().date()
+            data_hoje = datetime.now(tz=TZ_SAO_PAULO).date()
             data_formatada = data_hoje.strftime("%Y%m%d")
 
             # Renomeando o arquivo para 'ipo.xlsx'

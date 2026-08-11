@@ -1,7 +1,6 @@
 import pandas as pd
 from curl_cffi import requests
 
-
 """
 URLS:
 PMI Serviços - https://br.investing.com/economic-calendar/services-pmi-1062
