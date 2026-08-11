@@ -1,10 +1,12 @@
+from time import sleep
+
 import pandas as pd
 from selenium import webdriver
-from selenium.webdriver.firefox.options import Options
+from selenium.common.exceptions import NoSuchElementException, TimeoutException
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.support import expected_conditions as EC
-from time import sleep
+from selenium.webdriver.support.ui import WebDriverWait
 
 
 class WebScrapingCapitalSocial:
@@ -56,9 +58,10 @@ class WebScrapingCapitalSocial:
                 next_button.click()
                 sleep(3) # Espera a próxima página carregar
 
-            except Exception as e:
+            except (TimeoutException, NoSuchElementException) as e:
+                # Tabela não carregou a tempo ou o botão de próxima página não existe -> fim da coleta
                 print(f'Ocorreu um erro ou a última página foi alcançada: {e}')
-                break # Sai do loop em caso de erro (provavelmente o botão não foi encontrado)
+                break
 
     def salvar_dados(self):
         if self.all_data:

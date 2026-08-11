@@ -1,12 +1,20 @@
+import os
 from datetime import datetime
+from time import sleep
+from zoneinfo import ZoneInfo
+
 from selenium import webdriver
+from selenium.common.exceptions import (
+    ElementClickInterceptedException,
+    ElementNotInteractableException,
+)
 from selenium.webdriver.common.by import By
 from selenium.webdriver.firefox.options import Options
-from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from time import sleep
-import os
+from selenium.webdriver.support.ui import WebDriverWait
 
+# Fuso da B3 (horário de Brasília), usado para determinar a "data de hoje"
+TZ_SAO_PAULO = ZoneInfo('America/Sao_Paulo')
 
 class ClassificacaoRiscoBR:
     def __init__(self):
@@ -48,7 +56,8 @@ class ClassificacaoRiscoBR:
         # Tenta o clique normal; se algo interceptar, cai para o clique via JS
         try:
             botao_download.click()
-        except Exception:
+        except (ElementClickInterceptedException, ElementNotInteractableException):
+            # Algum overlay interceptou o clique -> aciona via JS
             self.driver.execute_script("arguments[0].click();", botao_download)
 
         sleep(5)
@@ -71,7 +80,7 @@ class ClassificacaoRiscoBR:
         nome_original = os.path.join(self.path_download, lista_arquivos[-1])
 
         # Obtendo a data em que foi feito o download e formantando a data
-        data_hoje = datetime.now().date()
+        data_hoje = datetime.now(tz=TZ_SAO_PAULO).date()
         data_formatada = data_hoje.strftime("%Y%m%d")
 
         # Novo nome do arquivo

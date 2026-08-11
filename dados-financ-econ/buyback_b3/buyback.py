@@ -3,14 +3,20 @@ import datetime
 import json
 import os
 import time
+from zoneinfo import ZoneInfo
+
 import pandas as pd
 import requests
+
+# Fuso da B3 (horário de Brasília), usado para determinar a "data de hoje"
+TZ_SAO_PAULO = ZoneInfo('America/Sao_Paulo')
+
 
 class buyback:
     def __init__(self):
 
         # Data usada na consulta (hoje)
-        date_str = datetime.date.today().strftime('%Y-%m-%d')
+        date_str = datetime.datetime.now(tz=TZ_SAO_PAULO).date().strftime('%Y-%m-%d')
 
         # Cabeçalhos comuns a todas as requisições
         headers = {
@@ -109,7 +115,7 @@ class buyback:
         df_buyback_final['quantity_only'] = df_buyback_final['quantity_only'].str.replace('.', '').astype(int)
 
         # Data do dia em que ocorreu o scraping dessa tabela
-        data_atual = datetime.date.today()
+        data_atual = datetime.datetime.now(tz=TZ_SAO_PAULO).date()
         data_atual_str = data_atual.strftime('%Y-%m-%d')
         data_atual_str = data_atual_str.replace('-', '_')
 
