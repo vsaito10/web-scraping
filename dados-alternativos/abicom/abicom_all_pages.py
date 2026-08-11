@@ -1,12 +1,13 @@
-from selenium import webdriver
-from selenium.webdriver.firefox.options import Options
-from selenium.webdriver.common.by import By
-import requests
-from bs4 import BeautifulSoup
-from datetime import datetime
 import re
+from datetime import datetime
 from time import sleep
 
+import requests
+from bs4 import BeautifulSoup
+from selenium import webdriver
+from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver.common.by import By
+from selenium.webdriver.firefox.options import Options
 
 """
 Faz o scraping de todas as imagens de todas as páginas do relatório da Abicom.
@@ -57,7 +58,7 @@ class RelatorioAbicom:
                     correspondencia = re.findall(padrao, data)
                     # Transformando o formato da data de '16/10/2023' para '20231016'
                     data_original = correspondencia[0]
-                    data_formatada = datetime.strptime(data_original, "%d/%m/%Y").strftime("%Y%m%d")
+                    data_formatada = datetime.strptime(data_original, "%d/%m/%Y").date().strftime("%Y%m%d")  # noqa: DTZ007
                     lst_data.append(data_formatada)
 
                 # Iterando sobre a 'lst_imagem' para tirar o screenshot das imagens dessa lista
@@ -75,7 +76,8 @@ class RelatorioAbicom:
                     response = requests.get(self.url, headers=self.headers)
                     self.soup = BeautifulSoup(response.content, 'html.parser')
 
-            except:
+            except NoSuchElementException:
+                # Não há mais botão de 'próxima página' -> fim da paginação
                 break
 
     def fechar_site(self):

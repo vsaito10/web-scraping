@@ -1,12 +1,12 @@
-from selenium import webdriver
-from selenium.webdriver.firefox.options import Options
-from selenium.webdriver.common.by import By
-import requests
-from bs4 import BeautifulSoup
-from datetime import datetime
 import re
+from datetime import datetime
 from time import sleep
 
+import requests
+from bs4 import BeautifulSoup
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.firefox.options import Options
 
 """
 Faz o scraping apenas da primeira imagem (mais atualizado) do relatório da Abicom.
@@ -36,16 +36,16 @@ class RelatorioAbicom:
 
     def salvar_imagem(self):
         # Imagem do relatório da Abicom
-        imagem = self.driver.find_element(By.XPATH, f'//*[@id="page"]/article/div/div/div/div/div/div[1]/a/img')
+        imagem = self.driver.find_element(By.XPATH, '//*[@id="page"]/article/div/div/div/div/div/div[1]/a/img')
 
         # Data de quando a imagem foi publicada
-        data = self.driver.find_element(By.XPATH, f'//*[@id="page"]/article/div/div/div/div/div/div[1]/a/div/h5').text
+        data = self.driver.find_element(By.XPATH, '//*[@id="page"]/article/div/div/div/div/div/div[1]/a/div/h5').text
         # Selecionando apenas a data da string ('PPI - 16/10/2023' -> '16/10/2023')
         padrao = r'\d{2}/\d{2}/\d{4}'
         correspondencia = re.findall(padrao, data)
         # Transformando o formato da data de '16/10/2023' para '20231016'
         data_original = correspondencia[0]
-        data_formatada = datetime.strptime(data_original, "%d/%m/%Y").strftime("%Y%m%d")
+        data_formatada = datetime.strptime(data_original, "%d/%m/%Y").date().strftime("%Y%m%d")  # noqa: DTZ007
 
         # Tirando o screenshot da imagem 
         arquivo_imagem = f'C://Users//vitor//projetos_python//python_b3//historico-arquivos//imagem-abicom//{data_formatada}_abicom.png'
