@@ -1,7 +1,7 @@
-import requests
 import json
+
 import pandas as pd
-from datetime import datetime
+import requests
 
 
 class WebScrapingNivelReservatorios:
@@ -20,9 +20,7 @@ class WebScrapingNivelReservatorios:
             "Sec-Fetch-Site": "same-site",
             "Sec-GPC": "1",
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36",
-            "sec-ch-ua": "^\^Not/A",
             "sec-ch-ua-mobile": "?0",
-            "sec-ch-ua-platform": "^\^Windows^^"
         }
 
         response = requests.request("GET", url, headers=headers)
