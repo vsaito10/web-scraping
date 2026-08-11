@@ -1,7 +1,8 @@
-from bs4 import BeautifulSoup
-import pandas as pd
 import re
+
+import pandas as pd
 import requests
+from bs4 import BeautifulSoup
 
 
 class AbrasMercado:
