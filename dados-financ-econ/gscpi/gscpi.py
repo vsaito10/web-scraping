@@ -1,7 +1,7 @@
 from io import StringIO
-import requests
-import pandas as pd
 
+import pandas as pd
+import requests
 
 # Global Supply Chain Pressure Index (GSCPI)
 # A URL do 'gscpi_interactive_data.csv' foi encontrada na aba 'GSCPI' (https://www.newyorkfed.org/research/policy/gscpi#/interactive) 

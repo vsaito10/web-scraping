@@ -1,13 +1,14 @@
-import requests
-from bs4 import BeautifulSoup
 import os
 import re
+
+import requests
+from bs4 import BeautifulSoup
 
 
 class PesquisaPeic:
     def __init__(self):
         # Diretório do download do arquivo
-        self.download_directory = 'C://Users//vitor//projetos_python//python_b3//web-scraping//dados-financ-econ//endividamento-brasil'
+        self.download_directory = 'C://B3//web-scraping//dados-financ-econ//endividamento-brasil'
 
         # URL
         self.url = 'https://www.fecomercio.com.br/pesquisas/indice/peic'

@@ -1,22 +1,19 @@
-from selenium import webdriver
-from webdriver_manager.firefox import GeckoDriverManager
-from selenium.webdriver.firefox.service import Service
-from selenium.webdriver.firefox.options import Options
-from selenium.webdriver.common.by import By
-from time import sleep
 import pandas as pd
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.firefox.options import Options
 
 
 class WebScrapingIntervalosInflacao:
     def __init__(self):
 
-        self.service = Service(GeckoDriverManager().install())
         options = Options()
         options.add_argument("--headless")  # Executar em modo headless (sem abrir o navegador)
         options.add_argument("--no-sandbox")  # Evitar erro de sandbox
         options.add_argument("--disable-dev-shm-usage")  # Evitar erro de uso de memória
         options.add_argument("--disable-gpu")  # Desabilitar a GPU
-        self.driver = webdriver.Firefox(service=self.service, options=options)
+        # Selenium 4.6+ gerencia o geckodriver automaticamente (Selenium Manager)
+        self.driver = webdriver.Firefox(options=options)
 
     def acessar_site(self):
         self.driver.get(
@@ -27,7 +24,7 @@ class WebScrapingIntervalosInflacao:
 
         # Descobrindo o nº de linhas da tabela. Somo mais 1, porque a 1º sublista é vazia
         rows = self.driver.find_elements(
-                By.XPATH, f'/html/body/app-root/app-root/div/div/main/dynamic-comp/div/div[7]/div/div/table/tbody/tr')
+                By.XPATH, '/html/body/app-root/app-root/div/div/main/dynamic-comp/div/div[7]/div/div/table/tbody/tr')
         len_tabela = len(rows)+1
 
         # Iterando sobre as linhas da tabela, retorna uma lista com várias sublistas

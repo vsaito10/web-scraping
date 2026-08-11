@@ -1,7 +1,12 @@
 import datetime
 import os
 import re
+from zoneinfo import ZoneInfo
+
 import requests
+
+# Fuso da B3 (horário de Brasília), usado para determinar a "data de hoje"
+TZ_SAO_PAULO = ZoneInfo('America/Sao_Paulo')
 
 
 class Debentures:
@@ -19,7 +24,7 @@ class Debentures:
 
     def baixar_arquivo(self):
         # Selecionando a data atual
-        data_atual = datetime.date.today()
+        data_atual = datetime.date.now(tz=TZ_SAO_PAULO)
 
         # Dia anterior da data atual
         dia = data_atual.day - 1
