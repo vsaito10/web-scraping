@@ -1,7 +1,8 @@
 from datetime import datetime
 from io import StringIO
-import requests
+
 import pandas as pd
+import requests
 
 
 class YieldCurveFedNy:
@@ -47,7 +48,7 @@ class YieldCurveFedNy:
             """
             Função para converter a data de "28-Feb-17" para "02/28/17".
             """
-            data_objeto = datetime.strptime(data_inicial, '%d-%b-%y')
+            data_objeto = datetime.strptime(data_inicial, '%d-%b-%y')  # noqa: DTZ007
             data_formatada = data_objeto.strftime('%m/%d/%y')
             
             return data_formatada
@@ -56,7 +57,7 @@ class YieldCurveFedNy:
             """
             Função para converter a data de "9/30/2023" para "9/30/23".
             """
-            data_objeto = datetime.strptime(data_inicial, '%m/%d/%Y')
+            data_objeto = datetime.strptime(data_inicial, '%m/%d/%Y')  # noqa: DTZ007
             data_formatada = data_objeto.strftime('%m/%d/%y')
             
             return data_formatada

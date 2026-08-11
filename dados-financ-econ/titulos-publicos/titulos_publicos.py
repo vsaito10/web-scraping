@@ -1,6 +1,8 @@
 import os
-import requests
 from time import sleep
+
+import requests
+
 
 class WebScrapingTitulosPublicos:
     def __init__(self):

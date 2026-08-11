@@ -1,9 +1,18 @@
+import logging
+import os
+from time import sleep
+
+import requests
 from bs4 import BeautifulSoup
 from selenium import webdriver
+from selenium.common.exceptions import (
+    ElementClickInterceptedException,
+    ElementNotInteractableException,
+    NoSuchElementException,
+)
 from selenium.webdriver.common.by import By
-from time import sleep
-import os
-import requests
+
+logger = logging.getLogger(__name__)
 
 
 class WebScrapingTitulosPublicos:
@@ -22,8 +31,9 @@ class WebScrapingTitulosPublicos:
         try:
             botao_cookie = self.driver.find_element(By.XPATH, '//*[@id="onetrust-accept-btn-handler"]')
             botao_cookie.click()
-        except:
-            pass
+        except (NoSuchElementException, ElementClickInterceptedException, ElementNotInteractableException) as e:
+            # Banner de cookie pode não estar presente -> segue normalmente
+            logger.debug('Botão de cookie não encontrado/clicável: %s', e)
 
     def links_planilhas(self):
         # Obtendo o HTML 
