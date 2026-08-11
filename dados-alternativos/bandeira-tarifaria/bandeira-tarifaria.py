@@ -1,10 +1,10 @@
-import requests
 import pandas as pd
+import requests
 
 
 # URL ANEEL
 # Estou puxando os 200 primeiros resultados - essa base de dados começa em '2015-01-01'
-url = 'https://dadosabertos.aneel.gov.br/api/3/action/datastore_search?resource_id=0591b8f6-fe54-437b-b72b-1aa2efd46e42&limit=5'
+url = 'https://dadosabertos.aneel.gov.br/api/3/action/datastore_search?resource_id=0591b8f6-fe54-437b-b72b-1aa2efd46e42&limit=200'
 
 # Headers
 headers = {
