@@ -1,7 +1,8 @@
-from selenium import webdriver
-from selenium.webdriver.firefox.options import Options
-from selenium.webdriver.common.by import By
 from time import sleep
+
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.firefox.options import Options
 
 
 class AtasCopom:
@@ -26,7 +27,7 @@ class AtasCopom:
         sleep(1)
 
         # Clicando no botão de cookie
-        botao_cookie = self.driver.find_element(By.XPATH, '/html/body/app-root/bcb-cookie-bar/div/div/div[2]/button[3]').click()
+        botao_cookie = self.driver.find_element(By.XPATH, '/html/body/app-root/bcb-cookie-bar/div/div/div[2]/button[3]').click()  # noqa: F841
         sleep(1)
 
         # Clicando no botão de download

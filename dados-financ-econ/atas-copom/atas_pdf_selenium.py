@@ -1,9 +1,18 @@
-from selenium import webdriver
-from selenium.webdriver.firefox.options import Options
-from selenium.webdriver.common.by import By
-from time import sleep
+import logging
 import re
+from time import sleep
+
 import requests
+from selenium import webdriver
+from selenium.common.exceptions import (
+    ElementClickInterceptedException,
+    ElementNotInteractableException,
+    NoSuchElementException,
+)
+from selenium.webdriver.common.by import By
+from selenium.webdriver.firefox.options import Options
+
+logger = logging.getLogger(__name__)
 
 
 class AtasCopom:
@@ -45,15 +54,15 @@ class AtasCopom:
 
         querystring = {'quantidade': '1000', 'filtro': ''}
         payload = ''
-        headers = {'sec-ch-ua': '^\^Chromium^^;v=^\^116^^, ^\^Not'}
+        headers = {'sec-ch-ua': r'^\^Chromium^^;v=^\^116^^, ^\^Not'}
 
         r = requests.request('GET', url, data=payload, headers=headers, params=querystring)
         data = r.json()
 
         # Posição da ata inicial
-        posicao_ata_inicial = pos_ata_inicial
+        _posicao_ata_inicial = pos_ata_inicial
         # Posição da ata final
-        posicao_ata_final = pos_ata_final
+        _posicao_ata_final = pos_ata_final
 
         # Lista com as datas de publicações de todas as atas
         lst_data_pub = []
@@ -87,19 +96,21 @@ class AtasCopom:
                     botao_cookie = self.driver.find_element(By.XPATH, '/html/body/app-root/bcb-cookies/div/div/div/div/button[2]')
                     botao_cookie.click()
                     sleep(1)
-                except:
-                    pass
+                except (NoSuchElementException, ElementClickInterceptedException, ElementNotInteractableException) as e:
+                    # Banner de cookie pode não estar presente -> segue para o download
+                    logger.debug('Botão de cookie não encontrado/clicável: %s', e)
 
                 try:
                     # Clicando no botão de download
                     botao_download = self.driver.find_element(By.XPATH, '//*[@id="publicacao"]/div[1]/div/div/div/div[1]/div[2]/download/div/div/a')
                     # Usando JavaScript para acionar o download diretamente
-                    self.driver.execute_script('arguments[0].click();', botao_download)                            
-                    sleep(10)    
+                    self.driver.execute_script('arguments[0].click();', botao_download)
+                    sleep(10)
 
-                    break  
-                except:
-                    pass
+                    break
+                except (NoSuchElementException, ElementClickInterceptedException, ElementNotInteractableException) as e:
+                    # Botão de download ainda não disponível (página carregando) -> tenta de novo
+                    logger.debug('Botão de download não encontrado/clicável, tentando novamente: %s', e)
 
     def fechar_site(self):
         # Fechando o driver
