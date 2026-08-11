@@ -2,7 +2,6 @@ import pandas as pd
 import requests
 import urllib3
 
-
 # Suprime o aviso de SSL
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
